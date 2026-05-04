@@ -6,9 +6,11 @@ import { Loader } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useAuth } from '@/lib/auth/AuthContext';
 
 export const LoginForm = ({ searchParams }: any) => {
 	const router = useRouter();
+	const { login } = useAuth();
 
 	const callbackUrl = searchParams.callbackUrl;
 
@@ -31,49 +33,11 @@ export const LoginForm = ({ searchParams }: any) => {
 		setLoading(true);
 
 		try {
-			const response = await fetch('/api/auth/login', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(formData),
-			});
-
-			const data = await response.json();
-
-			if (!data.success) {
-				toast.error(data.message || 'Login failed');
-				setLoading(false);
-				return;
-			}
-
-			// Store token in localStorage for client-side auth context
-			// Note: httpOnly cookie is also set by the API for middleware auth
-			localStorage.setItem('auth_token', data.data.token);
-			localStorage.setItem('auth_user', JSON.stringify(data.data.user));
-
+			await login(formData.email, formData.password);
 			toast.success('Login successful!');
-
-			// Get redirect URL from search params (set by middleware for protected routes)
-			const redirectUrl = searchParams.redirect;
-
-			// Redirect based on user role and callback URL
-			setTimeout(() => {
-				if (redirectUrl && data.data.user.role === 'admin') {
-					// Redirect to the originally requested admin page
-					// router.push(redirectUrl);
-				} else if (data.data.user.role === 'admin') {
-					router.push('/admin');
-				} else if (callbackUrl) {
-					// router.push(callbackUrl);
-				} else {
-					// Default redirect to packages page for regular users
-					router.push('/packages');
-				}
-			}, 1000);
 		} catch (error) {
 			console.error('Login error:', error);
-			toast.error('An error occurred. Please try again.');
+			toast.error(error instanceof Error ? error.message : 'Login failed');
 		} finally {
 			setLoading(false);
 		}
