@@ -1,5 +1,6 @@
 import { Footer } from '@/components/common/Footer';
 import { Navbar } from '@/components/common/Navbar';
+import { AuthProvider } from '@/lib/auth/AuthContext';
 import { Analytics } from '@vercel/analytics/next';
 import { Toaster } from 'react-hot-toast';
 import type { Metadata, Viewport } from 'next';
@@ -52,10 +53,12 @@ export default function RootLayout({
 	return (
 		<html lang='en' className='bg-background'>
 			<body className='font-sans antialiased'>
-				<Navbar />
-				{children}
-				<Footer />
-				<Toaster position='top-right' />
+				<AuthProvider>
+					<Navbar />
+					{children}
+					<Footer />
+					<Toaster position='top-right' />
+				</AuthProvider>
 				{process.env.NODE_ENV === 'production' && <Analytics />}
 			</body>
 		</html>

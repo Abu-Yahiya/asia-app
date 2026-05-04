@@ -1,16 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader } from 'lucide-react';
+import { useAuth } from '@/lib/auth/AuthContext';
 
 export const SignupForm = ({ searchParams }: any) => {
-	const router = useRouter();
+	const { signup } = useAuth();
 
-	const callbackUrl = searchParams.callbackUrl;
 	const [loading, setLoading] = useState(false);
 	const [formData, setFormData] = useState({
 		name: '',
@@ -33,7 +32,7 @@ export const SignupForm = ({ searchParams }: any) => {
 		setLoading(true);
 
 		// Validation
-		if (!formData.name || !formData.email || !formData.password) {
+		if (!formData.name || !formData.email || !formData.password || !formData.phone) {
 			toast.error('Please fill in all required fields');
 			setLoading(false);
 			return;
@@ -52,44 +51,17 @@ export const SignupForm = ({ searchParams }: any) => {
 		}
 
 		try {
-			const response = await fetch('/api/auth/register', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					name: formData.name,
-					email: formData.email,
-					password: formData.password,
-					phone: formData.phone,
-				}),
-			});
-
-			const data = await response.json();
-
-			if (!data.success) {
-				toast.error(data.message || 'Registration failed');
-				setLoading(false);
-				return;
-			}
-
-			// Store token in localStorage
-			localStorage.setItem('auth_token', data.data.token);
-			localStorage.setItem('auth_user', JSON.stringify(data.data.user));
-
+			await signup(
+				formData.name,
+				formData.email,
+				formData.phone,
+				formData.password,
+				formData.confirmPassword
+			);
 			toast.success('Account created successfully!');
-
-			// Redirect to callback URL or packages page
-			setTimeout(() => {
-				if (callbackUrl) {
-					router.push(callbackUrl);
-				} else {
-					router.push('/packages');
-				}
-			}, 1000);
 		} catch (error) {
 			console.error('Signup error:', error);
-			toast.error('An error occurred. Please try again.');
+			toast.error(error instanceof Error ? error.message : 'Signup failed');
 		} finally {
 			setLoading(false);
 		}

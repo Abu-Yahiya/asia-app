@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button';
 
 import { Menu, Plane, User, X, LogOut } from 'lucide-react';
 import Link from 'next/link';
-import { redirect, usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { useAuth } from '@/lib/auth/AuthContext';
 
 const navLinks = [
 	{ name: 'Home', href: '/' },
@@ -19,22 +20,18 @@ const navLinks = [
 
 export function Navbar() {
 	const [isOpen, setIsOpen] = useState(false);
-	const [user, setUser] = useState<any>(null);
 	const pathname = usePathname();
+	const router = useRouter();
+	const { user, logout } = useAuth();
 
-	useEffect(() => {
-		const userData = localStorage.getItem('auth_user');
-		if (userData) {
-			setUser(JSON.parse(userData));
+	const handleLogout = async () => {
+		try {
+			await logout();
+			toast.success('Logged out successfully');
+		} catch (error) {
+			console.error('[v0] Logout error:', error);
+			toast.error('Logout failed');
 		}
-	}, []);
-
-	const handleLogout = () => {
-		localStorage.removeItem('auth_token');
-		localStorage.removeItem('auth_user');
-		setUser(null);
-		toast.success('Logged out successfully');
-		window.location.href = '/';
 	};
 
 	return (
@@ -81,29 +78,29 @@ export function Navbar() {
 								</Button>
 							</>
 						) : (
-							<>
-								<Button
-									variant='ghost'
-									size='sm'
-									onClick={() => redirect('/login')}
-								>
-									<User className='w-4 h-4' />
-									Login
-								</Button>
-								<Button
-									variant='coral'
-									size='lg'
-									onClick={() => redirect('/signup')}
-								>
-									Sign Up
-								</Button>
-							</>
-						)}
-						<Button
-							variant='coral'
-							size='lg'
-							onClick={() => redirect('/appointment')}
-						>
+								<>
+									<Button
+										variant='ghost'
+										size='sm'
+										onClick={() => router.push('/login')}
+									>
+										<User className='w-4 h-4' />
+										Login
+									</Button>
+									<Button
+										variant='coral'
+										size='lg'
+										onClick={() => router.push('/signup')}
+									>
+										Sign Up
+									</Button>
+								</>
+							)}
+							<Button
+								variant='coral'
+								size='lg'
+								onClick={() => router.push('/appointment')}
+							>
 							Book Now
 						</Button>
 					</div>
@@ -152,38 +149,38 @@ export function Navbar() {
 									</Button>
 								</>
 							) : (
-								<>
-									<Button
-										variant='ghost'
-										className='w-full'
-										onClick={() => {
-											redirect('/login');
-											setIsOpen(false);
-										}}
-									>
-										<User className='w-4 h-4' />
-										Login
-									</Button>
-									<Button
-										variant='coral'
-										className='w-full'
-										onClick={() => {
-											redirect('/signup');
-											setIsOpen(false);
-										}}
-									>
-										Sign Up
-									</Button>
-								</>
-							)}
-							<Button
-								variant='coral'
-								className='w-full'
-								onClick={() => {
-									redirect('/appointment');
-									setIsOpen(false);
-								}}
-							>
+									<>
+										<Button
+											variant='ghost'
+											className='w-full'
+											onClick={() => {
+												router.push('/login');
+												setIsOpen(false);
+											}}
+										>
+											<User className='w-4 h-4' />
+											Login
+										</Button>
+										<Button
+											variant='coral'
+											className='w-full'
+											onClick={() => {
+												router.push('/signup');
+												setIsOpen(false);
+											}}
+										>
+											Sign Up
+										</Button>
+									</>
+								)}
+								<Button
+									variant='coral'
+									className='w-full'
+									onClick={() => {
+										router.push('/appointment');
+										setIsOpen(false);
+									}}
+								>
 								Book Now
 							</Button>
 						</div>
