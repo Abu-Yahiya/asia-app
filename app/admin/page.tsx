@@ -1,103 +1,76 @@
-const page = () => {
+'use client';
+
+import { useAuth } from '@/lib/auth/AuthContext';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { Loader } from 'lucide-react';
+
+export default function AdminPage() {
+	const { user, isLoading } = useAuth();
+	const router = useRouter();
+
+	useEffect(() => {
+		if (!isLoading && (!user || user.role !== 'admin')) {
+			router.push('/');
+		}
+	}, [user, isLoading, router]);
+
+	if (isLoading) {
+		return (
+			<div className='flex items-center justify-center min-h-screen'>
+				<Loader className='w-8 h-8 animate-spin' />
+			</div>
+		);
+	}
+
+	if (!user || user.role !== 'admin') {
+		return null;
+	}
+
 	return (
-		<div>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores tenetur
-			soluta cupiditate sunt aperiam, sequi magnam eius. Deleniti ipsam illo
-			doloribus excepturi natus repudiandae, delectus odio est velit asperiores
-			quaerat obcaecati iste unde cum, laudantium alias, dignissimos
-			consectetur. Sequi cumque alias laborum perferendis dolor est
-			perspiciatis, sunt odio a facilis nulla consequatur unde placeat porro
-			possimus? Dolorum eveniet ab reiciendis ut tempora autem repellendus nemo
-			molestiae deleniti odit ipsa labore sunt quas sit, dignissimos
-			necessitatibus laudantium explicabo, veniam voluptas perspiciatis dicta
-			qui porro. Consectetur doloremque, molestiae alias aliquam, inventore quam
-			reiciendis sit quas a tenetur ducimus eos exercitationem aut odio
-			recusandae dolorum itaque corrupti beatae voluptatum sint est possimus.
-			Mollitia deleniti repellat numquam, minima sapiente aspernatur, suscipit
-			officia facilis ex, perspiciatis qui natus neque placeat facere cumque id
-			quae enim ut ullam odio odit itaque laudantium. Velit, accusamus fuga
-			ipsum cum fugit eligendi nobis, beatae accusantium, tempore consequuntur
-			architecto. Consequuntur voluptatem voluptatibus consectetur quis quae
-			praesentium explicabo sed id magni, a quasi dicta! Omnis eum non corrupti
-			atque vero! Perspiciatis harum, reiciendis quasi corrupti sequi ratione
-			recusandae veritatis, aut deserunt, earum officia ipsum? Minima rem id
-			totam impedit, exercitationem perspiciatis praesentium voluptatibus earum
-			obcaecati tempora, natus dolorum suscipit harum voluptate neque soluta
-			fuga ipsam! Facere ab laborum saepe quod. Corrupti, assumenda. Commodi ea
-			asperiores magni iste totam cumque minus excepturi placeat, repudiandae
-			praesentium suscipit, odio dolore! Ipsa at quaerat adipisci repellendus
-			magni eius ipsam nostrum quis, aliquam consequatur eum ratione quod vitae
-			voluptas eos veniam enim consequuntur quia. Facere consequatur voluptate
-			molestiae, inventore sapiente quisquam blanditiis ipsum dolore ipsam ea
-			quo veritatis debitis, quidem sunt! Consectetur necessitatibus, aliquam
-			amet odio a iusto et similique quod, distinctio temporibus velit,
-			asperiores cum error ex mollitia corrupti ipsum alias eum voluptates
-			debitis pariatur minus adipisci? Mollitia at inventore dolorum enim minus,
-			cumque deleniti neque corrupti labore sint, praesentium dolorem placeat
-			excepturi. Voluptatum unde magnam numquam hic sint? Illum magni aut
-			facilis quibusdam nisi at fugiat placeat ex! Quos, laudantium ad itaque
-			consectetur enim temporibus facilis maxime commodi rerum quo amet
-			cupiditate deleniti, ab sequi est voluptatem fugit rem autem distinctio
-			aperiam reiciendis asperiores nihil numquam omnis. Dignissimos assumenda
-			itaque voluptatem consequatur dolorum sint minus aliquid impedit pariatur
-			porro ex iste necessitatibus fuga illum iure atque voluptates asperiores
-			magni, nam quo! Ipsa reiciendis quis architecto quas id fugit earum ab
-			expedita commodi molestias, a ex debitis similique quisquam, vitae
-			dignissimos, magnam repellendus necessitatibus ut. Magnam quaerat, nemo
-			voluptatem omnis iure architecto provident quia voluptatum, iste culpa
-			officiis ullam veniam fugiat vel rem consequuntur amet, et aspernatur
-			repudiandae optio voluptate dignissimos fuga accusantium inventore.
-			Expedita consequuntur in, architecto doloremque harum animi illum aut qui
-			sequi impedit maxime culpa est doloribus blanditiis dicta porro. Aperiam
-			itaque officiis dolore facere. Illo eius sit, vel inventore tenetur odit,
-			distinctio eligendi consectetur repellat maxime rerum praesentium. Odit
-			maiores nemo ab, unde harum velit assumenda cupiditate voluptatibus culpa,
-			ad doloribus expedita aspernatur rerum! Reiciendis nostrum modi enim?
-			Culpa tempora in, est delectus mollitia architecto. Velit neque, porro
-			nostrum inventore et voluptatum incidunt rem alias dolorum amet pariatur,
-			dolorem quae optio soluta voluptatem iste tempora, repudiandae quod
-			placeat id accusamus libero ratione ut iusto. Dolore iure est magni,
-			doloremque voluptates aperiam tenetur eveniet odio ullam aut quidem qui
-			perspiciatis quia. Debitis, minima culpa distinctio magni impedit quam
-			ipsa aspernatur nobis dignissimos repellat facilis odio possimus maiores
-			tempore consequatur, ad ex reprehenderit aliquid! Hic doloremque,
-			consequatur animi aspernatur sapiente tempore sit eos minus id debitis
-			itaque quod nobis tenetur reiciendis aut accusamus laborum? Praesentium
-			et, ratione quidem recusandae cum quod, ipsa maiores ut ea suscipit
-			deserunt debitis magnam sit cumque laboriosam ex in sint quos qui
-			reprehenderit? Maxime magni debitis provident totam nostrum, veniam dicta,
-			eveniet maiores esse laudantium, itaque laboriosam quisquam eius vel
-			reiciendis ullam quis laborum. Nesciunt iure molestiae repudiandae eveniet
-			minus dolores, sed, ducimus reprehenderit cum eum animi quod, fugit
-			aspernatur nihil sequi ab? Odio natus nihil totam? Fuga nostrum,
-			architecto atque similique totam quia minus repellat, explicabo
-			perferendis earum a, et facere voluptas cum cumque consequuntur? Vero
-			pariatur et corporis, inventore debitis officia? Ad quam architecto veniam
-			vel harum eum molestiae saepe quidem quis totam ullam itaque distinctio
-			molestias ut adipisci, debitis fugit vitae aliquid qui dolores nobis?
-			Aliquam sint suscipit totam perferendis in expedita, culpa nihil,
-			dignissimos eaque quidem unde similique iste! Nam tenetur recusandae
-			voluptas aspernatur ut sint, cupiditate sunt adipisci! Expedita,
-			perferendis voluptatibus ex dolor alias accusantium aspernatur laudantium
-			quia ea eveniet, voluptas odio exercitationem unde minus optio recusandae
-			quas, similique hic blanditiis vitae maxime quisquam assumenda doloremque.
-			Porro doloremque repudiandae aliquid officia nemo nulla, est blanditiis
-			harum veniam, illum aut possimus eos tempora quae cumque quam officiis.
-			Aspernatur, corrupti architecto earum exercitationem laudantium illum
-			aperiam adipisci. Atque veritatis, dolore facilis voluptate vel dolores
-			illo alias at reprehenderit deleniti modi, repellat ut fugiat ullam fuga!
-			Minima voluptate, obcaecati neque, totam, earum amet facilis a quis
-			dolorem ea quisquam accusantium quod velit. Soluta temporibus, quibusdam
-			nemo accusamus enim molestiae, minus natus adipisci mollitia explicabo
-			voluptatem inventore porro! Perferendis, rem velit earum veritatis eaque
-			nulla minus modi dignissimos asperiores tenetur ipsum praesentium libero,
-			ut repellendus, obcaecati amet at laboriosam minima dicta beatae? Totam
-			incidunt temporibus omnis. Corporis earum, deserunt maiores dolorum
-			nesciunt praesentium delectus distinctio ex! Maxime animi blanditiis a
-			illo quis repellendus officia, quasi in esse ipsam ullam quod autem fuga
-			aut, ducimus iusto corrupti ut reiciendis minus cum. Aliquam atque
-			doloremque, quo deleniti totam mollitia recusandae quasi expedita illo
-			possimus assumenda nobis nihil consequatur et deserunt ad maxime veniam
+		<main className='min-h-screen bg-background'>
+			<div className='container mx-auto px-4 py-12'>
+				<div className='mb-8'>
+					<h1 className='text-4xl font-bold text-foreground mb-2'>Admin Dashboard</h1>
+					<p className='text-muted-foreground'>Welcome, {user.name}</p>
+				</div>
+
+				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12'>
+					<div className='bg-card rounded-lg p-6 border border-border'>
+						<h2 className='text-xl font-semibold text-foreground mb-4'>Users</h2>
+						<p className='text-muted-foreground'>Manage all users</p>
+					</div>
+					<div className='bg-card rounded-lg p-6 border border-border'>
+						<h2 className='text-xl font-semibold text-foreground mb-4'>Settings</h2>
+						<p className='text-muted-foreground'>Manage system settings</p>
+					</div>
+					<div className='bg-card rounded-lg p-6 border border-border'>
+						<h2 className='text-xl font-semibold text-foreground mb-4'>Analytics</h2>
+						<p className='text-muted-foreground'>View analytics data</p>
+					</div>
+				</div>
+
+				<div className='bg-card rounded-lg p-6 border border-border'>
+					<h2 className='text-2xl font-bold text-foreground mb-4'>Quick Stats</h2>
+					<div className='grid grid-cols-3 gap-4'>
+						<div className='text-center'>
+							<p className='text-3xl font-bold text-primary'>0</p>
+							<p className='text-muted-foreground text-sm'>Total Users</p>
+						</div>
+						<div className='text-center'>
+							<p className='text-3xl font-bold text-primary'>0</p>
+							<p className='text-muted-foreground text-sm'>Active Sessions</p>
+						</div>
+						<div className='text-center'>
+							<p className='text-3xl font-bold text-primary'>0</p>
+							<p className='text-muted-foreground text-sm'>Pending Tasks</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	);
+}
 			dolor architecto corrupti debitis facere repellat. Sequi, obcaecati. Unde,
 			debitis ut laboriosam ea laborum tenetur. Quas explicabo repellendus
 			beatae, voluptates odio sed illum suscipit nostrum accusamus ut eligendi

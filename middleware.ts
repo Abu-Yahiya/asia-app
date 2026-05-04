@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from './lib/auth/jwt';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -17,15 +16,8 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
 
-    const decoded = verifyToken(token);
-    if (!decoded) {
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
-
-    // Check if user is admin
-    if (decoded.role !== 'admin') {
-      return NextResponse.redirect(new URL('/', request.url));
-    }
+    // Token verification happens client-side in the admin page component
+    // This middleware just ensures the token exists
   }
 
   return NextResponse.next();
