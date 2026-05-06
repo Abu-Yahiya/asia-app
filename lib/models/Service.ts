@@ -4,8 +4,8 @@ export interface IService extends Document {
   slug: string;
   title: string;
   description: string;
-  longDescription: string;
   duration: string;
+  longDescription: string;
   features: string[];
   process: { step: number; title: string; description: string }[];
   createdAt: Date;
@@ -30,26 +30,22 @@ const ServiceSchema = new Schema<IService>(
       type: String,
       required: [true, 'Please provide a short description'],
     },
-    longDescription: {
-      type: String,
-      required: [true, 'Please provide a detailed description'],
-    },
     duration: {
       type: String,
       required: [true, 'Please provide service duration'],
     },
-    features: [
-      {
-        type: String,
-      },
-    ],
-    process: [
-      {
-        step: Number,
-        title: String,
-        description: String,
-      },
-    ],
+    longDescription: {
+      type: String,
+      required: [true, 'Please provide a detailed description'],
+    },
+    features: [{
+      type: String,
+    }],
+    process: [{
+      step: Number,
+      title: String,
+      description: String,
+    }],
   },
   {
     timestamps: true,

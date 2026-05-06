@@ -4,13 +4,16 @@ export interface IPackage extends Document {
   id: string;
   title: string;
   location: string;
-  description: string;
   image: string;
   price: number;
   duration: string;
   groupSize: string;
   rating: number;
+  reviews: number;
+  description: string;
   highlights: string[];
+  included: string[];
+  notIncluded: string[];
   itinerary: { day: number; title: string; description: string }[];
   createdAt: Date;
   updatedAt: Date;
@@ -33,10 +36,6 @@ const PackageSchema = new Schema<IPackage>(
       type: String,
       required: [true, 'Please provide a location'],
       trim: true,
-    },
-    description: {
-      type: String,
-      required: [true, 'Please provide a description'],
     },
     image: {
       type: String,
@@ -61,18 +60,28 @@ const PackageSchema = new Schema<IPackage>(
       max: 5,
       default: 4.5,
     },
-    highlights: [
-      {
-        type: String,
-      },
-    ],
-    itinerary: [
-      {
-        day: Number,
-        title: String,
-        description: String,
-      },
-    ],
+    reviews: {
+      type: Number,
+      default: 0,
+    },
+    description: {
+      type: String,
+      required: [true, 'Please provide a description'],
+    },
+    highlights: [{
+      type: String,
+    }],
+    included: [{
+      type: String,
+    }],
+    notIncluded: [{
+      type: String,
+    }],
+    itinerary: [{
+      day: Number,
+      title: String,
+      description: String,
+    }],
   },
   {
     timestamps: true,
