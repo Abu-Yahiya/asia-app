@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "seed:all": "node scripts/seed-test-users.js",
+    "seed:data": "node --env-file-if-exists=/vercel/share/.env.project scripts/seed-data.js",
     "verify:admin": "node scripts/verify-admin.js",
     "fix:admin-role": "node scripts/fix-admin-role.js"
   },
