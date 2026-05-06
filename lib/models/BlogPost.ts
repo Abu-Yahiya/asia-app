@@ -3,14 +3,15 @@ import mongoose, { Schema, Document, Model } from 'mongoose';
 export interface IBlogPost extends Document {
   id: string;
   title: string;
-  slug: string;
-  description: string;
+  excerpt: string;
   content: string;
   image: string;
   author: string;
+  authorAvatar: string;
+  date: string;
   category: string;
-  date: Date;
   readTime: string;
+  tags: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -28,15 +29,9 @@ const BlogPostSchema = new Schema<IBlogPost>(
       trim: true,
       maxlength: [200, 'Title cannot exceed 200 characters'],
     },
-    slug: {
+    excerpt: {
       type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-    },
-    description: {
-      type: String,
-      required: [true, 'Please provide a description'],
+      required: [true, 'Please provide an excerpt'],
     },
     content: {
       type: String,
@@ -50,18 +45,27 @@ const BlogPostSchema = new Schema<IBlogPost>(
       type: String,
       required: [true, 'Please provide author name'],
     },
+    authorAvatar: {
+      type: String,
+      required: [true, 'Please provide author avatar URL'],
+    },
     category: {
       type: String,
       required: [true, 'Please provide a category'],
     },
     date: {
-      type: Date,
-      default: Date.now,
+      type: String,
+      required: [true, 'Please provide a date'],
     },
     readTime: {
       type: String,
       default: '5 min',
     },
+    tags: [
+      {
+        type: String,
+      },
+    ],
   },
   {
     timestamps: true,
