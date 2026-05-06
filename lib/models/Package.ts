@@ -5,15 +5,12 @@ export interface IPackage extends Document {
   title: string;
   location: string;
   description: string;
-  image: any;
+  image: string;
   price: number;
   duration: string;
   groupSize: string;
   rating: number;
-  reviews: number;
   highlights: string[];
-  included: string[];
-  notIncluded: string[];
   itinerary: { day: number; title: string; description: string }[];
   createdAt: Date;
   updatedAt: Date;
@@ -42,8 +39,8 @@ const PackageSchema = new Schema<IPackage>(
       required: [true, 'Please provide a description'],
     },
     image: {
-      type: Schema.Types.Mixed,
-      required: [true, 'Please provide an image'],
+      type: String,
+      required: [true, 'Please provide an image URL'],
     },
     price: {
       type: Number,
@@ -64,22 +61,7 @@ const PackageSchema = new Schema<IPackage>(
       max: 5,
       default: 4.5,
     },
-    reviews: {
-      type: Number,
-      default: 0,
-      min: [0, 'Reviews cannot be negative'],
-    },
     highlights: [
-      {
-        type: String,
-      },
-    ],
-    included: [
-      {
-        type: String,
-      },
-    ],
-    notIncluded: [
       {
         type: String,
       },
