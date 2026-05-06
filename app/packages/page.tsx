@@ -1,16 +1,16 @@
-'use client';
-
 import { PageBanner } from '@/components/common/PageBanner';
-import { PackagesList } from '@/components/features/PackagesList';
+import { PackagesSection } from '@/components/home/PackagesSection';
 
 const Packages = () => {
 	return (
 		<div className='min-h-screen'>
-			<PageBanner
-				title='Travel Packages'
-				subtitle='Explore our curated collection of travel experiences designed to create unforgettable memories'
-			/>
-			<PackagesList />
+			<div className='pt-20'>
+				<PageBanner
+					title='Travel Packages'
+					subtitle='Explore our curated collection of travel experiences designed to create unforgettable memories'
+				/>
+				<PackagesSection />
+			</div>
 		</div>
 	);
 };
