@@ -3,15 +3,7 @@
 import { Button } from '@/components/ui/button';
 
 import { useAuth } from '@/lib/auth/AuthContext';
-import {
-	ArrowRight,
-	LayoutGrid,
-	LogOut,
-	Menu,
-	Plane,
-	User,
-	X,
-} from 'lucide-react';
+import { ArrowLeft, LogOut, Menu, User, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -26,7 +18,7 @@ const navLinks = [
 	{ name: 'Contact', href: '/contact' },
 ];
 
-export function Navbar() {
+export function AdminNavbar() {
 	const [isOpen, setIsOpen] = useState(false);
 	const pathname = usePathname();
 	const router = useRouter();
@@ -43,36 +35,12 @@ export function Navbar() {
 	};
 
 	return (
-		<nav className='fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-lg border-b border-border'>
+		<nav className='fixed top-0 left-0 right-0 z-10 py-1 bg-card/80 backdrop-blur-lg border-b border-border'>
 			<div className='container mx-auto px-4'>
 				<div className='flex items-center justify-between h-20'>
-					<Link href='/' className='flex items-center gap-2'>
-						<div className='w-10 h-10 rounded-full bg-primary flex items-center justify-center'>
-							<Plane className='w-5 h-5 text-primary-foreground' />
-						</div>
-						<span className='font-display text-2xl font-semibold text-foreground'>
-							Asia Tours
-						</span>
-					</Link>
-
-					<div className='hidden lg:flex items-center gap-8'>
-						{navLinks.map((link) => (
-							<Link
-								key={link.href}
-								href={link.href}
-								className={`font-body text-sm font-medium transition-colors hover:text-primary ${
-									pathname === link.href
-										? 'text-primary'
-										: 'text-muted-foreground'
-								}`}
-							>
-								{link.name}
-							</Link>
-						))}
-					</div>
-
+					<div></div>
 					<div className='hidden lg:flex items-center gap-3'>
-						{user ? (
+						{user && (
 							<>
 								<div className='flex items-center gap-2 px-3 py-2 bg-muted rounded-lg'>
 									<User className='w-4 h-4 text-muted-foreground' />
@@ -85,41 +53,16 @@ export function Navbar() {
 									Logout
 								</Button>
 							</>
-						) : (
-							<>
-								<Button
-									variant='ghost'
-									size='sm'
-									onClick={() => router.push('/login')}
-								>
-									<User className='w-4 h-4' />
-									Login
-								</Button>
-								<Button
-									variant='coral'
-									size='lg'
-									onClick={() => router.push('/signup')}
-								>
-									Sign Up
-								</Button>
-							</>
 						)}
-						<Button
-							variant='coral'
-							size='lg'
-							onClick={() => router.push('/appointment')}
-						>
-							Book Now
-						</Button>
+
 						{user?.role === 'admin' && (
 							<Button
 								variant='ghost'
 								size='sm'
-								onClick={() => router.push('/admin')}
+								onClick={() => router.push('/')}
 							>
-								<LayoutGrid className='w-4 h-4' />
-								Dashboard
-								<ArrowRight className='w-4 h-4' />
+								<ArrowLeft className='w-4 h-4' />
+								Back to site
 							</Button>
 						)}
 					</div>
@@ -156,7 +99,7 @@ export function Navbar() {
 							</Link>
 						))}
 						<div className='flex flex-col gap-3 pt-4'>
-							{user ? (
+							{user && (
 								<>
 									<Button
 										variant='ghost'
@@ -167,41 +110,7 @@ export function Navbar() {
 										Logout
 									</Button>
 								</>
-							) : (
-								<>
-									<Button
-										variant='ghost'
-										className='w-full'
-										onClick={() => {
-											router.push('/login');
-											setIsOpen(false);
-										}}
-									>
-										<User className='w-4 h-4' />
-										Login
-									</Button>
-									<Button
-										variant='coral'
-										className='w-full'
-										onClick={() => {
-											router.push('/signup');
-											setIsOpen(false);
-										}}
-									>
-										Sign Up
-									</Button>
-								</>
 							)}
-							<Button
-								variant='coral'
-								className='w-full'
-								onClick={() => {
-									router.push('/appointment');
-									setIsOpen(false);
-								}}
-							>
-								Book Now
-							</Button>
 						</div>
 					</div>
 				</div>
