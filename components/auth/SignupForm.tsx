@@ -4,59 +4,45 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
 import { Loader } from 'lucide-react';
 import { useAuth } from '@/lib/auth/AuthContext';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signupSchema, type SignupFormData } from '@/lib/validations/auth';
 
 export const SignupForm = ({ searchParams }: any) => {
 	const { signup } = useAuth();
-
 	const [loading, setLoading] = useState(false);
-	const [formData, setFormData] = useState({
-		name: '',
-		email: '',
-		password: '',
-		confirmPassword: '',
-		phone: '',
+
+	const form = useForm<SignupFormData>({
+		resolver: zodResolver(signupSchema),
+		defaultValues: {
+			name: '',
+			email: '',
+			phone: '',
+			password: '',
+			confirmPassword: '',
+		},
 	});
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		setFormData((prev) => ({
-			...prev,
-			[name]: value,
-		}));
-	};
-
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
+	const onSubmit = async (data: SignupFormData) => {
 		setLoading(true);
-
-		// Validation
-		if (!formData.name || !formData.email || !formData.password || !formData.phone) {
-			toast.error('Please fill in all required fields');
-			setLoading(false);
-			return;
-		}
-
-		if (formData.password !== formData.confirmPassword) {
-			toast.error('Passwords do not match');
-			setLoading(false);
-			return;
-		}
-
-		if (formData.password.length < 6) {
-			toast.error('Password must be at least 6 characters');
-			setLoading(false);
-			return;
-		}
 
 		try {
 			await signup(
-				formData.name,
-				formData.email,
-				formData.phone,
-				formData.password,
-				formData.confirmPassword
+				data.name,
+				data.email,
+				data.phone,
+				data.password,
+				data.confirmPassword
 			);
 			toast.success('Account created successfully!');
 		} catch (error) {
@@ -68,109 +54,127 @@ export const SignupForm = ({ searchParams }: any) => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className='space-y-6'>
-			<div className='space-y-2'>
-				<label className='block text-sm font-medium text-foreground'>
-					Full Name *
-				</label>
-				<Input
-					type='text'
+		<Form {...form}>
+			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+				<FormField
+					control={form.control}
 					name='name'
-					placeholder='Enter your full name'
-					value={formData.name}
-					onChange={handleChange}
-					required
-					disabled={loading}
-					className='w-full'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Full Name</FormLabel>
+							<FormControl>
+								<Input
+									type='text'
+									placeholder='Enter your full name'
+									disabled={loading}
+									{...field}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
 				/>
-			</div>
 
-			<div className='space-y-2'>
-				<label className='block text-sm font-medium text-foreground'>
-					Email Address *
-				</label>
-				<Input
-					type='email'
+				<FormField
+					control={form.control}
 					name='email'
-					placeholder='Enter your email'
-					value={formData.email}
-					onChange={handleChange}
-					required
-					disabled={loading}
-					className='w-full'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Email Address</FormLabel>
+							<FormControl>
+								<Input
+									type='email'
+									placeholder='Enter your email'
+									disabled={loading}
+									{...field}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
 				/>
-			</div>
 
-			<div className='space-y-2'>
-				<label className='block text-sm font-medium text-foreground'>
-					Phone Number (Optional)
-				</label>
-				<Input
-					type='tel'
+				<FormField
+					control={form.control}
 					name='phone'
-					placeholder='Enter your phone number'
-					value={formData.phone}
-					onChange={handleChange}
-					disabled={loading}
-					className='w-full'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Phone Number</FormLabel>
+							<FormControl>
+								<Input
+									type='tel'
+									placeholder='Enter your phone number'
+									disabled={loading}
+									{...field}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
 				/>
-			</div>
 
-			<div className='space-y-2'>
-				<label className='block text-sm font-medium text-foreground'>
-					Password *
-				</label>
-				<Input
-					type='password'
+				<FormField
+					control={form.control}
 					name='password'
-					placeholder='Create a password (min. 6 characters)'
-					value={formData.password}
-					onChange={handleChange}
-					required
-					disabled={loading}
-					className='w-full'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Password</FormLabel>
+							<FormControl>
+								<Input
+									type='password'
+									placeholder='Create a password (min. 6 characters)'
+									disabled={loading}
+									{...field}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
 				/>
-			</div>
 
-			<div className='space-y-2'>
-				<label className='block text-sm font-medium text-foreground'>
-					Confirm Password *
-				</label>
-				<Input
-					type='password'
+				<FormField
+					control={form.control}
 					name='confirmPassword'
-					placeholder='Confirm your password'
-					value={formData.confirmPassword}
-					onChange={handleChange}
-					required
-					disabled={loading}
-					className='w-full'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Confirm Password</FormLabel>
+							<FormControl>
+								<Input
+									type='password'
+									placeholder='Confirm your password'
+									disabled={loading}
+									{...field}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
 				/>
-			</div>
 
-			<Button
-				type='submit'
-				variant='coral'
-				size='lg'
-				className='w-full'
-				disabled={loading}
-			>
-				{loading ? (
-					<>
-						<Loader className='w-4 h-4 mr-2 animate-spin' />
-						Creating Account...
-					</>
-				) : (
-					'Create Account'
-				)}
-			</Button>
+				<Button
+					type='submit'
+					variant='coral'
+					size='lg'
+					className='w-full'
+					disabled={loading}
+				>
+					{loading ? (
+						<>
+							<Loader className='w-4 h-4 mr-2 animate-spin' />
+							Creating Account...
+						</>
+					) : (
+						'Create Account'
+					)}
+				</Button>
 
-			<p className='text-center text-sm text-muted-foreground'>
-				Already have an account?{' '}
-				<a href='/login' className='text-primary font-medium hover:underline'>
-					Sign in here
-				</a>
-			</p>
-		</form>
+				<p className='text-center text-sm text-muted-foreground'>
+					Already have an account?{' '}
+					<a href='/login' className='text-primary font-medium hover:underline'>
+						Sign in here
+					</a>
+				</p>
+			</form>
+		</Form>
 	);
 };

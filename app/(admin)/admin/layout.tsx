@@ -13,6 +13,8 @@ import {
 	Mail,
 	Menu,
 	Package,
+	Users,
+	UserCog,
 	Wrench,
 	X,
 } from 'lucide-react';
@@ -23,6 +25,8 @@ import { toast } from 'sonner';
 
 const navItems = [
 	{ label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+	{ label: 'CRM', href: '/admin/crm', icon: Users },
+	{ label: 'Employees', href: '/admin/employees', icon: UserCog },
 	{ label: 'Packages', href: '/admin/packages', icon: Package },
 	{ label: 'Services', href: '/admin/services', icon: Wrench },
 	{ label: 'Blog', href: '/admin/blog', icon: FileText },
