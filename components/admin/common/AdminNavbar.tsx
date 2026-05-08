@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 
 import { useAuth } from '@/lib/auth/AuthContext';
-import { ArrowLeft, LogOut, Menu, User, X } from 'lucide-react';
+import { ArrowLeft, LogOut, Menu, Settings, User, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -42,12 +42,19 @@ export function AdminNavbar() {
 					<div className='hidden lg:flex items-center gap-3'>
 						{user && (
 							<>
-								<div className='flex items-center gap-2 px-3 py-2 bg-muted rounded-lg'>
-									<User className='w-4 h-4 text-muted-foreground' />
-									<span className='text-sm text-muted-foreground'>
-										{user.name}
-									</span>
-								</div>
+								<Link href='/admin/profile'>
+									<div className='flex items-center gap-2 px-3 py-2 bg-muted rounded-lg hover:bg-muted/80 transition-colors cursor-pointer'>
+										<User className='w-4 h-4 text-muted-foreground' />
+										<span className='text-sm text-muted-foreground'>
+											{user.name}
+										</span>
+									</div>
+								</Link>
+								<Link href='/admin/profile'>
+									<Button variant='ghost' size='icon'>
+										<Settings className='w-4 h-4' />
+									</Button>
+								</Link>
 								<Button variant='ghost' size='sm' onClick={handleLogout}>
 									<LogOut className='w-4 h-4' />
 									Logout
