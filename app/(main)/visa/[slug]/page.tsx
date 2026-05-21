@@ -3,21 +3,54 @@
 import { PageBanner } from '@/components/common/PageBanner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { countries } from '@/data/countries';
+import { VisaCountry } from '@/data/countries';
 import {
 	ArrowLeft,
 	ArrowRight,
 	DollarSign,
 	FileCheck,
 	Lightbulb,
+	Loader,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 const VisaCountry = () => {
 	const { slug } = useParams<{ slug: string }>();
 	const router = useRouter();
-	const country = countries.find((c) => c.slug === slug);
+
+	const [country, setCountry] = useState<VisaCountry>();
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		fetchCountry();
+	}, []);
+
+	const fetchCountry = async () => {
+		try {
+			setLoading(true);
+			const response = await fetch(`/api/visa/${slug}`);
+			const data = await response.json();
+			if (data.success) {
+				setCountry(data.data);
+			}
+		} catch (error) {
+			console.error('Error fetching countries:', error);
+			toast.error('Failed to fetch visa countries');
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	if (loading) {
+		return (
+			<div className='flex items-center justify-center py-12'>
+				<Loader className='w-8 h-8 animate-spin text-primary' />
+			</div>
+		);
+	}
 
 	if (!country) {
 		return (

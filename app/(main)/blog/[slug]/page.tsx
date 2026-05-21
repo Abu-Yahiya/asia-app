@@ -178,7 +178,7 @@ const BlogPost = () => {
 									{relatedPosts.map((rp) => (
 										<Card
 											key={rp.id}
-											className='border-0 shadow-soft hover:shadow-card transition-all overflow-hidden'
+											className='border-0 p-0 shadow-soft hover:shadow-card transition-all overflow-hidden'
 										>
 											<Link href={`/blog/${rp.id}`}>
 												<div className='flex'>
@@ -188,10 +188,10 @@ const BlogPost = () => {
 														className='w-24 h-24 object-cover flex-shrink-0'
 													/>
 													<CardContent className='p-3 flex flex-col justify-center'>
-														<p className='font-body text-xs text-primary mb-1'>
+														<p className='font-body text-sm text-primary mb-1'>
 															{rp.category}
 														</p>
-														<h4 className='font-display text-sm font-semibold text-foreground line-clamp-2'>
+														<h4 className='font-display text-md font-semibold text-foreground line-clamp-2'>
 															{rp.title}
 														</h4>
 													</CardContent>

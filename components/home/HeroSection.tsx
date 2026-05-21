@@ -2,23 +2,14 @@
 
 import heroImage from '@/assets/hero-beach.jpg';
 import { Button } from '@/components/ui/button';
-import { countries, visaTypes } from '@/data/countries';
+import { countries } from '@/data/countries';
 import { destinations } from '@/data/packages';
 
-import { ArrowRight, Calendar, MapPin, Search } from 'lucide-react';
+import { ArrowRight, MapPin, Search } from 'lucide-react';
 import { useState } from 'react';
 
-import {
-	Select,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { DateSelector } from './DateSelector';
 import { DestinationSelector } from './DestinationSelector';
 
 type SearchTab = 'packages' | 'visa';
@@ -109,10 +100,10 @@ export function HeroSection() {
 				</div>
 
 				{/* Tabbed Search Bar */}
-				<div className='mt-16 max-w-4xl'>
+				<div className='mt-16 max-w-2xl'>
 					<div className='bg-card/95 backdrop-blur-lg rounded-2xl shadow-elevated overflow-hidden'>
 						{/* Tabs */}
-						<div className='flex border-b border-border'>
+						{/* <div className='flex border-b border-border'>
 							<button
 								onClick={() => setActiveTab('packages')}
 								className={`flex-1 px-6 py-4 font-body text-sm font-medium transition-colors ${
@@ -133,12 +124,12 @@ export function HeroSection() {
 							>
 								📋 Visa Requirements
 							</button>
-						</div>
+						</div> */}
 
 						<div className='p-4'>
-							{activeTab === 'packages' ? (
+							{/* {activeTab === 'packages' ? (
 								<div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-									{/* Destination searchable select */}
+		 
 									<div className='relative'>
 										<div className='flex items-center gap-3 px-4 py-3 rounded-xl bg-muted'>
 											<MapPin className='w-5 h-5 text-primary flex-shrink-0' />
@@ -154,7 +145,7 @@ export function HeroSection() {
 										</div>
 									</div>
 
-									{/* Travel Date */}
+			 
 									<div className='flex items-center gap-3 px-4 py-3 rounded-xl bg-muted'>
 										<Calendar className='w-5 h-5 text-primary flex-shrink-0' />
 										<div className='flex-1'>
@@ -176,7 +167,7 @@ export function HeroSection() {
 								</div>
 							) : (
 								<div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-									{/* Country searchable select */}
+							 
 									<div className='relative'>
 										<div className='flex items-center gap-3 px-4 py-3 rounded-xl bg-muted'>
 											<MapPin className='w-5 h-5 text-ocean flex-shrink-0' />
@@ -192,7 +183,7 @@ export function HeroSection() {
 										</div>
 									</div>
 
-									{/* Visa Type select */}
+					 
 									<div className='flex items-center gap-3 px-4 py-3 rounded-xl bg-muted'>
 										<Search className='w-5 h-5 text-ocean flex-shrink-0' />
 										<div className='flex-1'>
@@ -225,7 +216,58 @@ export function HeroSection() {
 										Check Requirements
 									</Button>
 								</div>
-							)}
+							)} */}
+
+							<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+								{/* Country searchable select */}
+								<div className='relative'>
+									<div className='flex items-center gap-3 px-4 py-3 rounded-xl bg-muted'>
+										<MapPin className='w-5 h-5 text-ocean flex-shrink-0' />
+										<div className='flex-1 min-w-0'>
+											<p className='text-xs text-muted-foreground font-body'>
+												Country
+											</p>
+											<DestinationSelector
+												destination={selectedCountry}
+												setDestination={setSelectedCountry}
+											/>
+										</div>
+									</div>
+								</div>
+
+								{/* Visa Type select */}
+								{/* <div className='flex items-center gap-3 px-4 py-3 rounded-xl bg-muted'>
+									<Search className='w-5 h-5 text-ocean flex-shrink-0' />
+									<div className='flex-1'>
+										<p className='text-sm text-muted-foreground font-body'>
+											Visa Type
+										</p>
+										<Select onValueChange={setSelectedVisaType}>
+											<SelectTrigger className='w-full max-w-40'>
+												<SelectValue placeholder='Visa Types' />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectGroup>
+													{visaTypes.map((vt) => (
+														<SelectItem key={vt?.value} value={vt?.value}>
+															{vt?.label}
+														</SelectItem>
+													))}
+												</SelectGroup>
+											</SelectContent>
+										</Select>
+									</div>
+								</div> */}
+
+								<Button
+									variant='ocean'
+									className='h-full'
+									onClick={handleVisaSearch}
+								>
+									<Search className='w-4 h-4' />
+									Check Requirements
+								</Button>
+							</div>
 						</div>
 					</div>
 				</div>

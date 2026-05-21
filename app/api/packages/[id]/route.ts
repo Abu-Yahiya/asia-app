@@ -9,8 +9,8 @@ export async function GET(
 	try {
 		await connectDB();
 		const { id } = await params;
-
-		const pkg = await Package.findById(id);
+		console.log(id);
+		const pkg = await Package.findOne({ id });
 
 		if (!pkg) {
 			return NextResponse.json(

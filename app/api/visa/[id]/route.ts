@@ -10,7 +10,7 @@ export async function GET(
 		await connectDB();
 		const { id } = await params;
 
-		const country = await VisaCountry.findById(id);
+		const country = await VisaCountry.findOne({ slug: id });
 
 		if (!country) {
 			return NextResponse.json(
