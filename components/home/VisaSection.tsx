@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { countries } from '@/data/countries';
+import { VisaCountry } from '@/data/countries';
 import { ArrowRight, Clock, FileCheck, Globe, Shield } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -26,7 +26,7 @@ const features = [
 	},
 ];
 
-export function VisaSection() {
+export function VisaSection({ countries }: { countries: VisaCountry[] }) {
 	const router = useRouter();
 
 	return (
@@ -74,7 +74,7 @@ export function VisaSection() {
 
 					<div>
 						<div className='grid grid-cols-2 gap-4'>
-							{countries.map((country) => (
+							{countries.slice(0, 6).map((country) => (
 								<Card
 									key={country.slug}
 									className='border-0 shadow-soft hover:shadow-card transition-all duration-300 cursor-pointer group'

@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { packages } from '@/data/packages';
+import { TravelPackage } from '@/data/packages';
 import { ArrowRight, Clock, Star, Users } from 'lucide-react';
 import Link from 'next/link';
 
-export function PackagesSection() {
+export function PackagesSection({ packages }: { packages: TravelPackage[] }) {
 	return (
 		<section className='py-24 bg-background'>
 			<div className='container mx-auto px-4'>
@@ -22,7 +22,7 @@ export function PackagesSection() {
 				</div>
 
 				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-					{packages.map((pkg, index) => (
+					{packages?.map((pkg, index) => (
 						<div key={pkg.id}>
 							<Card
 								className='group p-0 overflow-hidden border-0 shadow-card hover:shadow-elevated transition-all duration-300 cursor-pointer'

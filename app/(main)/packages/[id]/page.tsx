@@ -2,12 +2,14 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { packages } from '@/data/packages';
+import { TravelPackage } from '@/data/packages';
 import {
 	ArrowLeft,
 	Calendar,
 	Check,
+	CheckCircle,
 	Clock,
+	Loader,
 	MapPin,
 	Star,
 	Users,
@@ -15,11 +17,43 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 const PackageDetail = () => {
+	const [pkg, setPackage] = useState<TravelPackage>();
+	const [loading, setLoading] = useState(true);
+
 	const router = useRouter();
 	const { id } = useParams<{ id: string }>();
-	const pkg = packages.find((p) => p.id === id);
+
+	useEffect(() => {
+		fetchPackage();
+	}, []);
+
+	const fetchPackage = async () => {
+		try {
+			setLoading(true);
+			const response = await fetch(`/api/packages/${id}`);
+			const data = await response.json();
+			if (data.success) {
+				setPackage(data.data);
+			}
+		} catch (error) {
+			console.error('Error fetching package:', error);
+			toast.error('Failed to fetch package');
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	if (loading) {
+		return (
+			<div className='flex items-center justify-center py-12'>
+				<Loader className='w-8 h-8 animate-spin text-primary' />
+			</div>
+		);
+	}
 
 	if (!pkg) {
 		return (
@@ -28,6 +62,7 @@ const PackageDetail = () => {
 					<h1 className='font-display text-3xl font-bold text-foreground mb-4'>
 						Package Not Found
 					</h1>
+
 					<Button variant='coral' asChild>
 						<Link href='/packages'>Browse All Packages</Link>
 					</Button>
@@ -126,7 +161,7 @@ const PackageDetail = () => {
 									{pkg.itinerary.map((day) => (
 										<div key={day.day} className='flex gap-4'>
 											<div className='w-12 h-12 rounded-full bg-gradient-hero flex items-center justify-center flex-shrink-0'>
-												<span className='font-body text-sm font-bold text-primary-foreground'>
+												<span className='font-body text-sm font-bold bg-primary py-1 px-3 rounded-full text-primary-foreground'>
 													{day.day}
 												</span>
 											</div>
@@ -152,7 +187,7 @@ const PackageDetail = () => {
 									<ul className='space-y-3'>
 										{pkg.included.map((item) => (
 											<li key={item} className='flex items-start gap-2'>
-												<Check className='w-5 h-5 text-forest mt-0.5 flex-shrink-0' />
+												<CheckCircle className='w-5 h-5 text-forest mt-0.5 flex-shrink-0' />
 												<span className='font-body text-foreground'>
 													{item}
 												</span>
@@ -180,7 +215,7 @@ const PackageDetail = () => {
 
 						{/* Sidebar - Booking Card */}
 						<div>
-							<Card className='border-0 shadow-elevated sticky top-28'>
+							<Card className='border-0 shadow-elevated sticky top-28 p-0'>
 								<CardContent className='p-8'>
 									<div className='mb-6'>
 										<span className='font-body text-sm text-muted-foreground'>
