@@ -84,7 +84,7 @@ export function HeroSection() {
 						<Button
 							variant='hero'
 							size='xl'
-							// onClick={() => navigate('/packages')}
+							onClick={() => router.push('/packages')}
 						>
 							Explore Packages
 							<ArrowRight className='w-5 h-5' />
@@ -92,7 +92,7 @@ export function HeroSection() {
 						<Button
 							variant='heroOutline'
 							size='xl'
-							// onClick={() => navigate('/appointment')}
+							onClick={() => router.push('/appointment')}
 						>
 							Plan Your Trip
 						</Button>
