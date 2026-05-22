@@ -8,18 +8,24 @@ import { TestimonialsSection } from '@/components/home/TestimonialsSection';
 import { VisaSection } from '@/components/home/VisaSection';
 import { VisaCountry } from '@/data/countries';
 import { TravelPackage } from '@/data/packages';
+import { BlogPost, Service } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 const Index = () => {
 	const [packages, setPackages] = useState<TravelPackage[]>([]);
 	const [loading, setLoading] = useState(true);
+	const [posts, setPosts] = useState<BlogPost[]>([]);
+
+	const [services, setServices] = useState<Service[]>([]);
 
 	const [countries, setCountries] = useState<VisaCountry[]>([]);
 
 	useEffect(() => {
 		fetchPackages();
 		fetchCountries();
+		fetchServices();
+		fetchPosts();
 	}, []);
 
 	const fetchCountries = async () => {
@@ -54,14 +60,46 @@ const Index = () => {
 		}
 	};
 
+	const fetchPosts = async () => {
+		try {
+			setLoading(true);
+			const response = await fetch('/api/blog');
+			const data = await response.json();
+			if (data.success) {
+				setPosts(data.data);
+			}
+		} catch (error) {
+			console.error('Error fetching posts:', error);
+			toast.error('Failed to fetch blog posts');
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const fetchServices = async () => {
+		try {
+			setLoading(true);
+			const response = await fetch('/api/services');
+			const data = await response.json();
+			if (data.success) {
+				setServices(data.data);
+			}
+		} catch (error) {
+			console.error('Error fetching services:', error);
+			toast.error('Failed to fetch services');
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
 		<div className='min-h-screen'>
 			<HeroSection />
 			<PackagesSection packages={packages} />
 			<VisaSection countries={countries?.slice(0, 6)} />
-			<AppointmentSection />
+			<AppointmentSection services={services} />
 			<TestimonialsSection />
-			<BlogSection />
+			<BlogSection blogPosts={posts.slice(0, 3)} />
 			<CTASection />
 		</div>
 	);
