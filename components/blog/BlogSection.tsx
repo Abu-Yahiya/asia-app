@@ -1,10 +1,24 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { blogPosts } from '@/data/blog';
-import { ArrowRight, Calendar, User } from 'lucide-react';
+
+import { BlogPost } from '@/lib/types';
+import { ArrowRight, Calendar, Loader, User } from 'lucide-react';
 import Link from 'next/link';
 
-export function BlogSection() {
+export function BlogSection({
+	blogPosts,
+	loading,
+}: {
+	blogPosts: BlogPost[];
+	loading: boolean;
+}) {
+	if (loading) {
+		return (
+			<div className='flex items-center justify-center py-12'>
+				<Loader className='w-8 h-8 animate-spin text-primary' />
+			</div>
+		);
+	}
 	return (
 		<section className='py-24 bg-muted'>
 			<div className='container mx-auto px-4'>
@@ -30,7 +44,7 @@ export function BlogSection() {
 				</div>
 
 				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-					{blogPosts.slice(0, 3).map((post, index) => (
+					{blogPosts?.map((post, index) => (
 						<article key={post.id}>
 							<Card className='border-0 p-0 shadow-card hover:shadow-elevated transition-all duration-300 overflow-hidden group'>
 								<Link href={`/blog/${post.id}`}>

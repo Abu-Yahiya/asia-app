@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { blogPosts } from '@/data/blog';
+import { BlogPost } from '@/lib/types';
 import { ArrowRight, Calendar, User } from 'lucide-react';
 import Link from 'next/link';
 
-export function BlogSection() {
+export function BlogSection({ blogPosts }: { blogPosts: BlogPost[] }) {
 	return (
 		<section className='py-24 bg-muted'>
 			<div className='container mx-auto px-4'>
