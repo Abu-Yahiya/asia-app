@@ -26,6 +26,7 @@ import toast from 'react-hot-toast';
 import ClientFormDialog from './ClientFormDialog';
 import TransactionFormDialog from './TransactionFormDialog';
 import ActivityFormDialog from './ActivityFormDialog';
+import TransactionTableActions from '@/components/admin/payment/TransactionTableActions';
 
 interface Client {
 	_id: string;
@@ -362,42 +363,49 @@ export default function ClientDetail({ clientId }: ClientDetailProps) {
 											key={transaction._id}
 											className='flex items-center justify-between p-3 rounded-lg bg-muted/50'
 										>
-											<div className='flex items-center gap-3'>
+											<div className='flex items-center gap-3 flex-1'>
 												<Badge className={getTransactionColor(transaction.type)}>
 													{transaction.type}
 												</Badge>
-												<div>
+												<div className='flex-1'>
 													<p className='font-medium'>{transaction.description}</p>
 													<p className='text-sm text-muted-foreground'>
 														{formatDate(transaction.createdAt)}
 													</p>
 												</div>
 											</div>
-											<div className='text-right'>
-												<p
-													className={`font-semibold ${
-														transaction.type === 'payment'
-															? 'text-green-600'
-															: transaction.type === 'refund'
-															? 'text-red-600'
-															: 'text-foreground'
-													}`}
-												>
-													{transaction.type === 'payment' ? '-' : '+'}
-													{formatCurrency(Math.abs(transaction.amount))}
-												</p>
-												<Badge
-													variant='outline'
-													className={
-														transaction.status === 'completed'
-															? 'border-green-500 text-green-600'
-															: transaction.status === 'cancelled'
-															? 'border-red-500 text-red-600'
-															: 'border-amber-500 text-amber-600'
-													}
-												>
-													{transaction.status}
-												</Badge>
+											<div className='flex items-center gap-3'>
+												<div className='text-right'>
+													<p
+														className={`font-semibold ${
+															transaction.type === 'payment'
+																? 'text-green-600'
+																: transaction.type === 'refund'
+																? 'text-red-600'
+																: 'text-foreground'
+														}`}
+													>
+														{transaction.type === 'payment' ? '-' : '+'}
+														{formatCurrency(Math.abs(transaction.amount))}
+													</p>
+													<Badge
+														variant='outline'
+														className={
+															transaction.status === 'completed'
+																? 'border-green-500 text-green-600'
+																: transaction.status === 'cancelled'
+																? 'border-red-500 text-red-600'
+																: 'border-amber-500 text-amber-600'
+														}
+													>
+														{transaction.status}
+													</Badge>
+												</div>
+												<TransactionTableActions
+													transaction={transaction}
+													clientId={clientId}
+													onInvoiceCreated={() => fetchClientData()}
+												/>
 											</div>
 										</div>
 									))}
@@ -432,42 +440,49 @@ export default function ClientDetail({ clientId }: ClientDetailProps) {
 											key={transaction._id}
 											className='flex items-center justify-between p-3 rounded-lg bg-muted/50'
 										>
-											<div className='flex items-center gap-3'>
+											<div className='flex items-center gap-3 flex-1'>
 												<Badge className={getTransactionColor(transaction.type)}>
 													{transaction.type}
 												</Badge>
-												<div>
+												<div className='flex-1'>
 													<p className='font-medium'>{transaction.description}</p>
 													<p className='text-sm text-muted-foreground'>
 														{formatDate(transaction.createdAt)}
 													</p>
 												</div>
 											</div>
-											<div className='text-right'>
-												<p
-													className={`font-semibold ${
-														transaction.type === 'payment'
-															? 'text-green-600'
-															: transaction.type === 'refund'
-															? 'text-red-600'
-															: 'text-foreground'
-													}`}
-												>
-													{transaction.type === 'payment' ? '-' : '+'}
-													{formatCurrency(Math.abs(transaction.amount))}
-												</p>
-												<Badge
-													variant='outline'
-													className={
-														transaction.status === 'completed'
-															? 'border-green-500 text-green-600'
-															: transaction.status === 'cancelled'
-															? 'border-red-500 text-red-600'
-															: 'border-amber-500 text-amber-600'
-													}
-												>
-													{transaction.status}
-												</Badge>
+											<div className='flex items-center gap-3'>
+												<div className='text-right'>
+													<p
+														className={`font-semibold ${
+															transaction.type === 'payment'
+																? 'text-green-600'
+																: transaction.type === 'refund'
+																? 'text-red-600'
+																: 'text-foreground'
+														}`}
+													>
+														{transaction.type === 'payment' ? '-' : '+'}
+														{formatCurrency(Math.abs(transaction.amount))}
+													</p>
+													<Badge
+														variant='outline'
+														className={
+															transaction.status === 'completed'
+																? 'border-green-500 text-green-600'
+																: transaction.status === 'cancelled'
+																? 'border-red-500 text-red-600'
+																: 'border-amber-500 text-amber-600'
+														}
+													>
+														{transaction.status}
+													</Badge>
+												</div>
+												<TransactionTableActions
+													transaction={transaction}
+													clientId={clientId}
+													onInvoiceCreated={() => fetchClientData()}
+												/>
 											</div>
 										</div>
 									))}
